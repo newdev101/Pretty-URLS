@@ -1,3 +1,6 @@
+
+require('dotenv').config()
+
 const express = require('express');
 const path = require('path');
 
@@ -11,8 +14,9 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const {checkForAuthCookie, checkForUser} = require('./middlewares/authentication')
 
+
 const app = express();
-const PORT=8000;
+const PORT = process.env.PORT || 8000;
 
 //view engine
 app.set('view engine', 'ejs');
@@ -31,7 +35,7 @@ app.use('/',checkForUser, rootRoute);
 
 //connect to database
 mongoose
-.connect('mongodb://127.0.0.1:27017/url_shortner2')
+.connect(process.env.MONGO_URL)
 .then((err)=>console.log('mongod connected'));
 
 
