@@ -1,9 +1,15 @@
 const express = require('express');
 const path = require('path');
+
+//routers
 const userRoute = require('./routes/user');
+const urlRoute = require('./routes/url');
+const rootRoute = require('./routes/rootRoute')
+
+//mongdb
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const {checkForAuthCookie} = require('./middlewares/authentication')
+const {checkForAuthCookie, checkForUser} = require('./middlewares/authentication')
 
 const app = express();
 const PORT=8000;
@@ -13,15 +19,15 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));
 
 //middleware
+app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 
 
 //routes
+app.use('/url',checkForAuthCookie,urlRoute);
 app.use('/user',userRoute);
-app.get('/',checkForAuthCookie,(req,res)=>res.render('home',{
-     user:req.user,
-}));
+app.use('/',checkForUser, rootRoute);
 
 //connect to database
 mongoose

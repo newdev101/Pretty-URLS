@@ -12,7 +12,64 @@
 <body>
 
      <%- include('./partials/nav') %>
-     <h1>hello world</h1>
+     
+    <div class="container mt-4">
+     <h1>URL SHORTENER</h1>
+
+     <% if (locals.id) { %>
+          <h4>URL generated: </h4>
+          <h3>redirect URL: http://localhost:8000/<%= id %>
+          </h3>
+      <% } %>
+     <% if (true) { %>
+
+          <form method="post" action="/url">
+               <div class="mb-3">
+                    <label for="">please input your url:</label> &nbsp;
+                 <input type="text" name="url" class="form-control" placeholder="https://www.google.com" required aria-describedby="emailHelp">
+               </div>
+               <button type="submit" class="btn btn-primary">Submit</button>
+             </form>
+
+     <% } %>
+     
+     <% if (locals.url_list) { %>
+          <div class="container mt-4">
+               <table class="table table-success table-striped">
+                    
+                    <thead>
+                         <th>#</th>
+                         <th>shortId</th>
+                         <th>URL</th>
+                         <th>visits</th>
+                         <th>redirectURL</th>
+                    </thead>
+                    <tbody>
+                         <% urls.forEach((url,index)=> { %>
+                         <tr>
+                              <td>
+                                   <%= index+1 %>
+                              </td>
+                              <td>
+                                   <%= url.shortId %>
+                              </td>
+                              <td>
+                                   <%= url.redirectUrl %>
+                              </td>
+                              <td>
+                                   <%= url.visitHistory.length %>
+                              </td>
+                              <td>
+                                   http://localhost:8000/<%= url.shortId %>
+                              </td>
+                         </tr>
+                         <% }) %>
+                    </tbody>
+               </table>
+
+          </div>
+     <% } %>
+    </div>
    
      <%- include('./partials/script') %>
 </body>
